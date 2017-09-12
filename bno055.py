@@ -136,7 +136,7 @@ class BNO055:
 
     def reset(self):
         self.operation_mode(CONFIG_MODE)
-        self._system_trigger = 0x20
+        self._system_trigger(0x20)
         while True:
             try:
                 chip_id = self._chip_id()
