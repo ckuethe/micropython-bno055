@@ -88,6 +88,10 @@ class BNO055:
                           register=0x3a,
                           value=None)
 
+    systemstatus = partial(_register,
+                           register=0x39,
+                           value=None)
+
     temperature = partial(_register,
                           register=0x34,
                           value=None)
