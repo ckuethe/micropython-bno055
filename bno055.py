@@ -62,26 +62,67 @@ class BNO055:
             return self._registers(register, struct=struct)[0]
         self._registers(register, struct=struct, value=(value,))
 
-    _chip_id = partial(_register, register=0x00, value=None)
-    _power_mode = partial(_register, register=0x3e)
-    _system_trigger = partial(_register, register=0x3f)
-    _page_id = partial(_register, register=0x07)
-    operation_mode = partial(_register, register=0x3d)
-    temperature = partial(_register, register=0x34, value=None)
-    accelerometer = partial(_registers, register=0x08, struct='<hhh',
-                            value=None, scale=1/100)
-    magnetometer = partial(_registers, register=0x0e, struct='<hhh',
-                           value=None, scale=1/16)
-    gyroscope = partial(_registers, register=0x14, struct='<hhh',
-                        value=None, scale=1/900)
-    euler = partial(_registers, register=0x1a, struct='<hhh',
-                    value=None, scale=1/16)
-    quaternion = partial(_registers, register=0x20, struct='<hhhh',
-                         value=None, scale=1/(1<<14))
-    linear_acceleration = partial(_registers, register=0x28, struct='<hhh',
-                                  value=None, scale=1/100)
-    gravity = partial(_registers, register=0x2e, struct='<hhh',
-                      value=None, scale=1/100)
+    _chip_id = partial(_register,
+                       register=0x00,
+                       value=None)
+
+    _power_mode = partial(_register,
+                          register=0x3e)
+
+    _system_trigger = partial(_register,
+                              register=0x3f)
+
+    _page_id = partial(_register,
+                       register=0x07)
+
+    operation_mode = partial(_register,
+                             register=0x3d)
+
+    temperature = partial(_register,
+                          register=0x34,
+                          value=None)
+
+    accelerometer = partial(_registers,
+                            register=0x08,
+                            struct='<hhh',
+                            value=None,
+                            scale=1/100)
+
+    magnetometer = partial(_registers,
+                           register=0x0e,
+                           struct='<hhh',
+                           value=None,
+                           scale=1/16)
+
+    gyroscope = partial(_registers,
+                        register=0x14,
+                        struct='<hhh',
+                        value=None,
+                        scale=1/900)
+
+    euler = partial(_registers,
+                    register=0x1a,
+                    struct='<hhh',
+                    value=None,
+                    scale=1/16)
+
+    quaternion = partial(_registers,
+                         register=0x20,
+                         struct='<hhhh',
+                         value=None,
+                         scale=1/(1<<14))
+
+    linear_acceleration = partial(_registers,
+                                  register=0x28,
+                                  struct='<hhh',
+                                  value=None,
+                                  scale=1/100)
+
+    gravity = partial(_registers,
+                      register=0x2e,
+                      struct='<hhh',
+                      value=None,
+                      scale=1/100)
 
     def init(self, mode=NDOF_MODE):
         chip_id = self._chip_id()
