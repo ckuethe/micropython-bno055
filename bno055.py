@@ -43,6 +43,12 @@ class BNO055:
         self.i2c = i2c
         self.address = address
         self.init()
+        self.operation_mode(value=NDOF_MODE)
+        while True:
+            q = self.quaternion()
+            e = self.euler()
+            if self.temperature() or sum(q) or sum(e):
+                break
 
     def _registers(self, register, struct, value=None, scale=1):
         if value is None:
@@ -77,6 +83,10 @@ class BNO055:
 
     operation_mode = partial(_register,
                              register=0x3d)
+
+    errorbits = partial(_register,
+                          register=0x3a,
+                          value=None)
 
     temperature = partial(_register,
                           register=0x34,
@@ -129,14 +139,14 @@ class BNO055:
         if chip_id != _CHIP_ID:
             raise RuntimeError("bad chip id (%x != %x)" % (chip_id, _CHIP_ID))
         self.reset()
-        self._power_mode(_POWER_NORMAL)
-        self._page_id(0)
-        self._system_trigger(0x00)
-        self.operation_mode(mode)
+        self._power_mode(value=_POWER_NORMAL)
+        self._page_id(value=0)
+        self._system_trigger(value=0x00)
+        self.operation_mode(value=mode)
 
     def reset(self):
-        self.operation_mode(CONFIG_MODE)
-        self._system_trigger(0x20)
+        self.operation_mode(value=CONFIG_MODE)
+        self._system_trigger(value=0x20)
         while True:
             try:
                 chip_id = self._chip_id()
@@ -149,7 +159,7 @@ class BNO055:
 
     def use_external_crystal(self, value):
         last_mode = self.operation_mode()
-        self.operation_mode(config_mode)
-        self._page_id(0)
-        self._system_trigger(0x80 if value else 0x00)
-        self.operation_mode(last_mode)
+        self.operation_mode(value=config_mode)
+        self._page_id(value=0)
+        self._system_trigger(value=0x80 if value else 0x00)
+        self.operation_mode(value=last_mode)
