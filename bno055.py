@@ -84,9 +84,9 @@ class BNO055:
     operation_mode = partial(_register,
                              register=0x3d)
 
-    errorbits = partial(_register,
-                          register=0x3a,
-                          value=None)
+    errorcode = partial(_register,
+                        register=0x3a,
+                        value=None)
 
     systemstatus = partial(_register,
                            register=0x39,
