@@ -43,12 +43,6 @@ class BNO055:
         self.i2c = i2c
         self.address = address
         self.init()
-        self.operation_mode(value=NDOF_MODE)
-        while True:
-            q = self.quaternion()
-            e = self.euler()
-            if self.temperature() or sum(q) or sum(e):
-                break
 
     def _registers(self, register, struct, value=None, scale=1):
         if value is None:
@@ -167,3 +161,14 @@ class BNO055:
         self._page_id(value=0)
         self._system_trigger(value=0x80 if value else 0x00)
         self.operation_mode(value=last_mode)
+
+    def fix_bno(self):
+        rval = [-1, -1, -1]
+        while ((rval[0] != NDOF_MODE) and (rval[1] != 5) and (rval[2] != 0)):
+            self.operation_mode(value=NDOF_MODE)
+            for i in range(4):
+                sleep_ms(50)
+                rval = self.operation_mode(), self.systemstatus(), self.errorcode(), self.temperature(), self.euler()
+        return rval
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4 syn=python
