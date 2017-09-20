@@ -1,6 +1,7 @@
 from micropython import const
 import ustruct
 from functools import partial
+from time import sleep_ms
 
 
 _CHIP_ID = const(0xa0)
